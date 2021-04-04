@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+              rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    </head>
+    <body>
+        <div>
+            <h3>Data Entry</h3>
+            <form action="/add" th:action="@{/add}" th:object="${newdata}" method="GET">
+                <p>Nama:</p>
+                <input type="text" name="nama" value=""></input><br><!-- comment -->
+                <button type="submit">Save</button><!-- comment -->
+            </form>
+            <p th:text="${result}"></p>
+            <p th:text="${action}"></p>
+        </div>
+    </body>
+</html>
