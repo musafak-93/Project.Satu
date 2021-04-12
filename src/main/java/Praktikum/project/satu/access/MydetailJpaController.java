@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Id;
 import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -20,9 +21,9 @@ import javax.persistence.criteria.Root;
  *
  * @author Musafak
  */
-public class MydataJpaController implements Serializable {
+public class MydetailJpaController implements Serializable {
 
-    public MydataJpaController(EntityManagerFactory emf) {
+    public MydetailJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Praktikum_project.satu_jar_0.0.1-SNAPSHOTPU");
@@ -31,15 +32,16 @@ public class MydataJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public MydataJpaController() {
+    public MydetailJpaController() {
     }
+    
 
-    public void create(Mydata mydata) {
+    public void create(Mydetail mydetail) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            em.persist(mydata);
+            em.persist(mydetail);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -48,19 +50,19 @@ public class MydataJpaController implements Serializable {
         }
     }
 
-    public void edit(Mydata mydata) throws NonexistentEntityException, Exception {
+    public void edit(Mydetail mydetail) throws NonexistentEntityException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            mydata = em.merge(mydata);
+            mydetail = em.merge(mydetail);
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = mydata.getId();
-                if (findMydata(id) == null) {
-                    throw new NonexistentEntityException("The mydata with id " + id + " no longer exists.");
+                Long id = mydetail.getId();
+                if (findMydetail(id) == null) {
+                    throw new NonexistentEntityException("The mydetail with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -71,19 +73,19 @@ public class MydataJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException {
+    public void destroy(Id id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Mydata mydata;
+            Mydetail mydetail;
             try {
-                mydata = em.getReference(Mydata.class, id);
-                mydata.getId();
+                mydetail = em.getReference(Mydetail.class, id);
+                mydetail.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The mydata with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The mydetail with id " + id + " no longer exists.", enfe);
             }
-            em.remove(mydata);
+            em.remove(mydetail);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -92,19 +94,19 @@ public class MydataJpaController implements Serializable {
         }
     }
 
-    public List<Mydata> findMydataEntities() {
-        return findMydataEntities(true, -1, -1);
+    public List<Mydetail> findMydetailEntities() {
+        return findMydetailEntities(true, -1, -1);
     }
 
-    public List<Mydata> findMydataEntities(int maxResults, int firstResult) {
-        return findMydataEntities(false, maxResults, firstResult);
+    public List<Mydetail> findMydetailEntities(int maxResults, int firstResult) {
+        return findMydetailEntities(false, maxResults, firstResult);
     }
 
-    private List<Mydata> findMydataEntities(boolean all, int maxResults, int firstResult) {
+    private List<Mydetail> findMydetailEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Mydata.class));
+            cq.select(cq.from(Mydetail.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -116,20 +118,20 @@ public class MydataJpaController implements Serializable {
         }
     }
 
-    public Mydata findMydata(Integer id) {
+    public Mydetail findMydetail(Long id) {
         EntityManager em = getEntityManager();
         try {
-            return em.find(Mydata.class, id);
+            return em.find(Mydetail.class, id);
         } finally {
             em.close();
         }
     }
 
-    public int getMydataCount() {
+    public int getMydetailCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Mydata> rt = cq.from(Mydata.class);
+            Root<Mydetail> rt = cq.from(Mydetail.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
